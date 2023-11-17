@@ -271,11 +271,13 @@ def get_foreground_and_background_regions(
         promoter_annotation = genome_annotation.copy()
         for index, row in promoter_annotation.iterrows():
             if row["Strand"] == "+":
-                promoter_annotation.loc[index, "End"] += promoter_space
-                promoter_annotation.loc[index, "Start"] -= promoter_space
+               start=promoter_annotation.loc[index, "Start"]
+               promoter_annotation.loc[index, "Start"]= start - promoter_space
+               promoter_annotation.loc[index, "End"] = start + promoter_space
             else:
-                promoter_annotation.loc[index, "End"] += promoter_space
-                promoter_annotation.loc[index, "Start"] -= promoter_space
+               end=promoter_annotation.loc[index, "End"]
+               promoter_annotation.loc[index, "Start"] = end - promoter_space
+               promoter_annotation.loc[index, "End"] = end + promoter_space
 
         # Calculate fraction of promoters in foreground
         pr_promoter_annotation = pr.PyRanges(
